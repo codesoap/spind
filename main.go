@@ -50,7 +50,7 @@ func main() {
 }
 
 // fillInFromArgs fills the in variable with the file passed as
-// os.Args[1], if present. If successfull, true is returned.
+// os.Args[1], if present. If successful, true is returned.
 func fillInFromArgs() bool {
 	if len(os.Args) != 2 {
 		return false
