@@ -57,20 +57,20 @@ func encryptForm(w fyne.Window) fyne.CanvasObject {
 
 func encrypt(pw, pw2 *widget.Entry, infile *widget.Button, w fyne.Window) {
 	if in == nil {
-		showError(fmt.Errorf("No input file selected."), w)
+		showSubmenuError(fmt.Errorf("No input file selected."), w)
 		return
 	} else if pw.Text == "" {
-		showError(fmt.Errorf("Password is empty."), w)
+		showSubmenuError(fmt.Errorf("Password is empty."), w)
 		return
 	} else if pw.Text != pw2.Text {
-		showError(fmt.Errorf("Passwords do not match."), w)
+		showSubmenuError(fmt.Errorf("Passwords do not match."), w)
 		return
 	}
 	nextDialogOpen := false
 	fd := dialog.NewFileSave(func(out fyne.URIWriteCloser, err error) {
 		nextDialogOpen = true // User didn't abort.
 		if err != nil {
-			showError(fmt.Errorf("Could not write new file: %w.", err), w)
+			showSubmenuError(fmt.Errorf("Could not write new file: %w.", err), w)
 			return
 		}
 		if out != nil {
@@ -81,7 +81,7 @@ func encrypt(pw, pw2 *widget.Entry, infile *widget.Button, w fyne.Window) {
 				infile.SetText("Select input file")
 			}()
 			if err := encryptToFile(out, pw.Text, w); err != nil {
-				showError(fmt.Errorf("Could not encrypt file: %w.", err), w)
+				showSubmenuError(fmt.Errorf("Could not encrypt file: %w.", err), w)
 				return
 			}
 		}

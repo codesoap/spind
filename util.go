@@ -30,7 +30,7 @@ func handleDialogKey(e *fyne.KeyEvent, w fyne.Window, d dialog.Dialog) {
 func fillInfile(button *widget.Button, w fyne.Window) {
 	fd := dialog.NewFileOpen(func(rc fyne.URIReadCloser, err error) {
 		if err != nil {
-			showError(fmt.Errorf("Could not open file: %w.", err), w)
+			showSubmenuError(fmt.Errorf("Could not open file: %w.", err), w)
 			return
 		}
 		if rc != nil {
@@ -51,7 +51,16 @@ func fillInfile(button *widget.Button, w fyne.Window) {
 	w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleDialogKey(e, w, fd) })
 }
 
-func showError(err error, w fyne.Window) {
+func showMenuError(err error, w fyne.Window) {
+	errDialog := dialog.NewError(err, w)
+	errDialog.Show() // FIXME: Move down once #4651 is fixed.
+	errDialog.SetOnClosed(func() {
+		w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleMenuKey(e, w) })
+	})
+	w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleDialogKey(e, w, errDialog) })
+}
+
+func showSubmenuError(err error, w fyne.Window) {
 	errDialog := dialog.NewError(err, w)
 	errDialog.Show() // FIXME: Move down once #4651 is fixed.
 	errDialog.SetOnClosed(func() {

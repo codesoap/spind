@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -125,6 +126,14 @@ func handleFileDrop(w fyne.Window, uris []fyne.URI) {
 	//       Create a zip archive when appropriate.
 
 	if len(uris) == 1 {
+		fileInfo, err := os.Stat(uris[0].Path())
+		if err != nil {
+			showMenuError(fmt.Errorf("Could not read file: %w", err), w)
+			return
+		} else if fileInfo.IsDir() {
+			showMenuError(fmt.Errorf("spind cannot encrypt whole directories, only single files."), w)
+			return
+		}
 		if droppedIn, err := storage.OpenFileFromURI(uris[0]); err == nil {
 			in = droppedIn
 			if strings.HasSuffix(strings.ToLower(in.URI().Path()), ".age") {
@@ -132,6 +141,10 @@ func handleFileDrop(w fyne.Window, uris []fyne.URI) {
 			} else {
 				drawEncryptForm(w)
 			}
+		} else {
+			showMenuError(fmt.Errorf("Could not read file: %w", err), w)
 		}
+	} else {
+		showMenuError(fmt.Errorf("Drop a single file into spind to en- or decrypt."), w)
 	}
 }

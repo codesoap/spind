@@ -48,17 +48,17 @@ func decryptForm(w fyne.Window) fyne.CanvasObject {
 
 func decrypt(pw *widget.Entry, infile *widget.Button, w fyne.Window) {
 	if in == nil {
-		showError(fmt.Errorf("No input file selected."), w)
+		showSubmenuError(fmt.Errorf("No input file selected."), w)
 		return
 	} else if pw.Text == "" {
-		showError(fmt.Errorf("Password is empty."), w)
+		showSubmenuError(fmt.Errorf("Password is empty."), w)
 		return
 	}
 	nextDialogOpen := false
 	fd := dialog.NewFileSave(func(out fyne.URIWriteCloser, err error) {
 		nextDialogOpen = true // User didn't abort.
 		if err != nil {
-			showError(fmt.Errorf("Could not write new file: %w.", err), w)
+			showSubmenuError(fmt.Errorf("Could not write new file: %w.", err), w)
 			return
 		}
 		if out != nil {
@@ -69,7 +69,7 @@ func decrypt(pw *widget.Entry, infile *widget.Button, w fyne.Window) {
 				infile.SetText("Select input file")
 			}()
 			if err := decryptToFile(out, pw.Text, w); err != nil {
-				showError(fmt.Errorf("Could not decrypt file: %w.", err), w)
+				showSubmenuError(fmt.Errorf("Could not decrypt file: %w.", err), w)
 				return
 			}
 		}
