@@ -23,12 +23,12 @@ var in fyne.URIReadCloser
 var windowSize = fyne.Size{Width: 800, Height: 480}
 var dialogSize = fyne.Size{Width: 780, Height: 460}
 
-const encryptOptionExplanation = `Use encryption to protect data
+const encryptOptionExplanation = `Use encryption to protect files
 from unauthorized access by
-locking it with a password.`
+locking them with a password.`
 
 const decryptOptionExplanation = `Use decryption to regain access
-to previously encrypted data by
+to previously encrypted files by
 providing the password.`
 
 func main() {
