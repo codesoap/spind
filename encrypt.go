@@ -95,13 +95,13 @@ func encrypt(pw, pw2 *widget.Entry, infile *widget.Button, w fyne.Window) {
 		}
 	}
 	fd.Resize(dialogSize)
-	fd.Show() // FIXME: Move down once #4651 is fixed.
 	fd.SetOnClosed(func() {
 		if !nextDialogOpen {
 			w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleSubmenuKey(e, w) })
 		}
 	})
 	w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleDialogKey(e, w, fd) })
+	fd.Show()
 }
 
 func encryptToFile(out fyne.URIWriteCloser, pw string, w fyne.Window) error {

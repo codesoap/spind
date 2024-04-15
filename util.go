@@ -44,29 +44,29 @@ func fillInfile(button *widget.Button, w fyne.Window) {
 		}
 	}, w)
 	fd.Resize(dialogSize)
-	fd.Show() // FIXME: Move down once #4651 is fixed.
 	fd.SetOnClosed(func() {
 		w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleSubmenuKey(e, w) })
 	})
 	w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleDialogKey(e, w, fd) })
+	fd.Show()
 }
 
 func showMenuError(err error, w fyne.Window) {
 	errDialog := dialog.NewError(err, w)
-	errDialog.Show() // FIXME: Move down once #4651 is fixed.
 	errDialog.SetOnClosed(func() {
 		w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleMenuKey(e, w) })
 	})
 	w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleDialogKey(e, w, errDialog) })
+	errDialog.Show()
 }
 
 func showSubmenuError(err error, w fyne.Window) {
 	errDialog := dialog.NewError(err, w)
-	errDialog.Show() // FIXME: Move down once #4651 is fixed.
 	errDialog.SetOnClosed(func() {
 		w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleSubmenuKey(e, w) })
 	})
 	w.Canvas().SetOnTypedKey(func(e *fyne.KeyEvent) { handleDialogKey(e, w, errDialog) })
+	errDialog.Show()
 }
 
 // sizeOf returns the size of the file of uri. If URI is not a file or
