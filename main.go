@@ -45,7 +45,8 @@ func main() {
 	} else {
 		drawMenu(w)
 	}
-	w.SetOnDropped(func(pos fyne.Position, uris []fyne.URI) { handleFileDrop(w, uris) })
+	// FIXME: Remove `go` once fix for github.com/fyne-io/fyne/issues/4624 is released.
+	w.SetOnDropped(func(pos fyne.Position, uris []fyne.URI) { go handleFileDrop(w, uris) })
 	w.ShowAndRun()
 }
 
