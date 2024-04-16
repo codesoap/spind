@@ -3,7 +3,7 @@ aims to provide a cross-platform and intuitive user interface. Files are
 encrypted with the [age format](https://age-encryption.org) and can be
 decrypted or provided by other tools using the same format.
 
-![screenshot of the main menu](https://github.com/codesoap/spind/releases/download/v0.1.0/dark_menu.png)
+![screenshot of the main menu](https://github.com/codesoap/spind/releases/download/v0.2.0/dark_menu.png)
 ![screenshot of the encryption submenu](https://github.com/codesoap/spind/releases/download/v0.1.0/dark_encrypt.png)
 ![screenshot of the encryption progress dialog](https://github.com/codesoap/spind/releases/download/v0.1.0/dark_encrypt_progress.png)
 
