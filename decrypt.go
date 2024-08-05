@@ -54,6 +54,16 @@ func decrypt(pw *widget.Entry, infile *widget.Button, w fyne.Window) {
 		showSubmenuError(fmt.Errorf("Password is empty."), w)
 		return
 	}
+	reader, err := openEncryptedFile(pw.Text)
+	if err != nil {
+		// FIXME: Reset reader to start of file (not yet possible with fyne).
+		in.Close()
+		in = nil
+		infile.SetText("Select input file")
+		pw.SetText("")
+		showSubmenuError(fmt.Errorf("Could not decrypt file: %w", err), w)
+		return
+	}
 	nextDialogOpen := false
 	fd := dialog.NewFileSave(func(out fyne.URIWriteCloser, err error) {
 		nextDialogOpen = true // User didn't abort.
@@ -68,7 +78,7 @@ func decrypt(pw *widget.Entry, infile *widget.Button, w fyne.Window) {
 				in = nil
 				infile.SetText("Select input file")
 			}()
-			if err := decryptToFile(out, pw.Text, w); err != nil {
+			if err := decryptToFile(out, reader, w); err != nil {
 				showSubmenuError(fmt.Errorf("Could not decrypt file: %w.", err), w)
 				return
 			}
@@ -95,23 +105,25 @@ func decrypt(pw *widget.Entry, infile *widget.Button, w fyne.Window) {
 	fd.Show()
 }
 
-func decryptToFile(out fyne.URIWriteCloser, pw string, w fyne.Window) error {
+func openEncryptedFile(pw string) (io.Reader, error) {
 	identity, err := age.NewScryptIdentity(pw)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	reader, err := age.Decrypt(in, identity)
 	if _, ok := err.(*age.NoIdentityMatchError); ok {
-		return fmt.Errorf("wrong password")
-	} else if err != nil {
-		return err
+		return nil, fmt.Errorf("wrong password")
 	}
+	return reader, err
+}
+
+func decryptToFile(out fyne.URIWriteCloser, reader io.Reader, w fyne.Window) error {
 	txt := fmt.Sprintf("Decrypting %s...", in.URI().Path())
 	if totalSize := sizeOf(in); totalSize > 0 {
 		progressDialog := dialog.NewProgress("Decrypting", txt, w)
 		w.Canvas().SetOnTypedKey(nil) // Keys will be enabled again in success or error dialog.
 		progressDialog.Show()
-		_, err = io.Copy(out, &progressReader{reader, totalSize, 0, progressDialog, time.Now()})
+		_, err := io.Copy(out, &progressReader{reader, totalSize, 0, progressDialog, time.Now()})
 		progressDialog.Hide()
 		if err != nil {
 			return err
@@ -120,7 +132,7 @@ func decryptToFile(out fyne.URIWriteCloser, pw string, w fyne.Window) error {
 		progressDialog := dialog.NewProgressInfinite("Decrypting", txt, w)
 		w.Canvas().SetOnTypedKey(nil) // Keys will be enabled again in success or error dialog.
 		progressDialog.Show()
-		_, err = io.Copy(out, reader)
+		_, err := io.Copy(out, reader)
 		progressDialog.Hide()
 		if err != nil {
 			return err
