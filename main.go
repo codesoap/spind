@@ -92,7 +92,7 @@ func handleMenuKey(e *fyne.KeyEvent, w fyne.Window) {
 }
 
 func showAbout(w fyne.Window) {
-	body := widget.NewRichTextFromMarkdown(`spind version 0.2.0
+	body := widget.NewRichTextFromMarkdown(`spind version 0.2.1
 
 spind allows you to en- and decrypt files with passwords.
 
