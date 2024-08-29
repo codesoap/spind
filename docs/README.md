@@ -6,7 +6,8 @@ be saved as a new file. Be sure to delete the old file, if you wish to
 get rid of any unprotected copy of your data.
 
 # Download
-Download spind for Windows: [spind.exe (portable)](https://github.com/codesoap/spind/releases/download/v0.2.0/spind.exe)
+Download spind version 0.2.1 for Windows:
+[spind.exe (portable)](https://github.com/codesoap/spind/releases/download/v0.2.1/spind.exe)
 
 Other platforms, like MacOS, Linux, Android and iOS, are planned for the
 future.
